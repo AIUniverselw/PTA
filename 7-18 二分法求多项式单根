@@ -1,0 +1,83 @@
+#include <stdio.h>
+double a3, a2, a1, a0;
+double f(double num);
+int main ()
+{
+	double a, b;
+	scanf("%lf %lf %lf %lf", &a3, &a2, &a1, &a0);
+	scanf("%lf %lf", &a, &b);
+	while(f(a) * f(b) <= 0)
+	{
+    //端点为根时f(a)*f(b)=0
+		if(f(a) == 0)
+		{
+			printf("%.2lf", a);
+			break;
+		}
+		if(f(b) == 0)
+		{
+			printf("%.2lf", b);
+			break;
+		}
+    //端点可能是根
+
+    //二分法循环
+		if(f((a + b) / 2) == 0)
+		{
+			printf("%.2lf", (a + b) / 2);
+			break;
+		}
+		else if(f((a + b) / 2) * f(a) > 0)
+			a = (a + b) / 2;
+		else if(f((a + b) / 2) * f(b) > 0)
+			b = (a + b) / 2;
+        
+        //当区间长度<0.01时,二分之后根<0.005,保留2位小数之后为0
+        //所以区间长度的阈值应该是0.01,虽然题目没有明说,但应该学会推测
+        //如果没有最后一个测试点会超时
+    if(b - a < 0.01)
+    {
+        printf("%.2lf", (a + b) / 2);
+			  break;
+    }
+	}
+	return 0;
+}
+
+double f(double num)
+{
+	double result = a3 * num * num * num + a2 * num * num + a1 * num + a0 ;
+	return result;
+}
+
+2.0
+#include <stdio.h>
+double a3,a2,a1,a0;
+double a,b,mid;
+double f(double x);
+int main()
+{
+    scanf("%lf%lf%lf%lf%lf%lf", &a3,&a2,&a1,&a0,&a,&b);
+    mid = b - (b - a) / 2;
+    if(f(a) == 0)
+        mid = a;
+    else if(f(b) == 0)
+        mid = b;
+    else
+        while(f(a)*f(b) < 0)
+        {
+            if(f(mid) == 0 || b - a < 0.01)
+                break;
+            else if(f(a) * f(mid) > 0)
+                a = mid;
+            else if(f(b) * f(mid) > 0)
+                b = mid;
+            mid = b - (b - a) / 2;
+        }
+    printf("%.2lf\n", mid);
+    return 0;
+}
+double f(double x)
+{
+    return a3*x*x*x+a2*x*x+a1*x+a0;
+}

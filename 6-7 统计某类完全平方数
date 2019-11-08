@@ -1,0 +1,40 @@
+int IsTheNumber ( const int N )
+{
+    int m = N, cnt = 0, flag = 0;
+    int a[15] = {0};
+    while(m)    //重复数字问题用桶排序
+    {
+        a[m % 10]++;
+        m /= 10;
+    }
+    for(int i = 0; i < 10; i++)
+        if(a[i] > 1)
+        {
+            flag = 1;
+            break;
+        }
+    int n = floor(sqrt(N) + 0.5);
+    if (n * n == N && flag)
+        return 1;
+    else
+        return 0;
+}
+
+int IsTheNumber ( const int N )
+{
+    if(N <= 10)
+        return 0;
+    int t = N;
+    int num[10] = {0};
+    while(t > 0)
+    {
+        num[t % 10]++;
+        if(num[t % 10] > 1)
+            break;
+        t /= 10;
+    }
+    int n = sqrt(N);
+    if((n * n == N) && t > 0)
+        return 1;
+    return 0;
+}

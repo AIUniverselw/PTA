@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX 85
+
+char s1[MAX], s2[MAX];
+void input(char s[]);
+int IsSubsequence(int i, int len);
+void write(int i, int len);
+
+int main()
+{
+	int position[MAX], cnt = 0;     //用一个数组来存放和s2第一个字母相等，在s1中的位置，以应对嵌套
+	memset(position, 0, sizeof(position));
+	input(s1);
+	input(s2);
+	for(int i = 0; i < strlen(s1); ++i)
+		if(s1[i] == s2[0])
+		{
+			position[i]++;  //找到就++，cnt代表还需处理的s1首字母和s2首字母相同的个数
+			cnt++;
+			int flag = IsSubsequence(i, strlen(s2));
+			if(flag)
+			{
+				write(i, strlen(s2));
+				cnt--;  //除去一个子串,还需处理的s1首字母和s2首字母相同的个数-1
+			 }
+		}
+	while(cnt)  //处理嵌套
+		for(int i = strlen(s1) - 1; i >= 0; --i)    //从内往外处理首字母相同的地方
+			if(position[i] && s1[i] != '/')
+			{
+				int flag = IsSubsequence(i, strlen(s2));
+				if(flag)
+				{
+					write(i, strlen(s2));
+					position[i] = 0;
+					cnt--;
+				}
+				else    //虽然首字母相同,但不是子串，那之后也不存在嵌套子串
+				{
+                    cnt = 0;
+                    break;
+                }
+			}
+	for(int i = 0; i < strlen(s1); ++i)
+		if(s1[i] != '/')
+			printf("%c", s1[i]);
+	return 0;
+}
+void input(char s[])
+{
+	for(int i = 0; i < MAX; ++i)
+	{
+		scanf("%c", s + i);
+		if(s[i] == '\n')
+		{
+			s[i] = '\0';
+			break;
+		}
+	}
+}
+int IsSubsequence(int i, int len)
+{
+	for(int j = 1; j < len; ++j)
+		if(s1[i + j] == '/')
+		{
+			j--;
+			i++;
+		}
+		else if(s1[i + j] != s2[j])
+			return 0;
+	return 1;	
+}
+void write(int i, int len)
+{
+	for(int j = 0; j < len; ++j)
+		if(s1[i + j] == '/')
+		{
+			j--;
+			i++;
+		}
+		else
+			s1[i + j] = '/';
+}
+
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+  string s1, s2;
+	getline(cin, s1);
+	getline(cin, s2);
+	while(s1.find(s2) < s1.length())
+		s1.erase(s1.find(s2), s2.length());
+	cout << s1;
+    return 0;
+}

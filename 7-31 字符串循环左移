@@ -1,0 +1,29 @@
+#include <iostream> 
+#include <string>
+#include <queue>
+using namespace std;
+int main()
+{
+	queue<char> t;
+	char c;
+	int cnt;
+	while((c = getchar()) != '\n')
+		t.push(c);
+    scanf("%d", &cnt);
+    if(cnt % t.size() != 0)
+	{   
+        cnt %= t.size();
+        while(cnt--)
+	    {
+		    c = t.front();
+		    t.pop();
+		    t.push(c);
+	    }
+    }
+	while(!t.empty())
+	{
+		cout << t.front();
+		t.pop();
+	}
+    return 0;
+}

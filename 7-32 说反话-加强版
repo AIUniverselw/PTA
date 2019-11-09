@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX 500000 + 10
+char s[MAX];
+int main()
+{
+	gets(s);
+	int len, word, first;
+	len = strlen(s);
+	word = 0;
+	first = 1;
+	for(int i = len - 1; i >= 0; --i)
+	{
+		if(s[i] == ' ' && word)
+		{
+			if(first == 1)
+				first = 0;
+			else
+				printf(" ");
+			for(int j = 1; j <= word; ++j) 
+				printf("%c", s[i + j]);
+			word = 0;
+		}else if(s[i] != ' ')
+			word++;
+	}
+	if(word)
+	{
+		if(first == 0)
+			printf(" ");
+		int i = 0;
+		while(word--)
+			printf("%c", s[i++]);
+	}
+	return 0;
+}
